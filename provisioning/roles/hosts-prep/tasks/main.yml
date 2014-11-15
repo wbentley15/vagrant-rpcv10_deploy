@@ -1,0 +1,50 @@
+---
+
+- name: Install apt-get updates
+  command: apt-get update
+
+- name: Install additional packages
+  apt: name={{item}} state=present
+  with_items:
+   - git
+   - vim
+   - fping
+   
+- name: Clone RPC repository
+  command: chdir=/opt git clone -b 9.0.1 https://github.com/rcbops/ansible-lxc-rpc.git
+
+- name: Download pip repo
+  command: chdir=/opt curl -O https://bootstrap.pypa.io/get-pip.py
+
+- name: Install pip
+  command: chdir=/opt python get-pip.py
+  
+- name: Install Ansible and RPC dependencies
+  command: chdir=/opt pip install -r /opt/ansible-lxc-rpc/requirements.txt
+    
+- name: Copy private key to host
+  copy: src=id_rsa dest=/root/.ssh mode=0600
+
+- name: Copy public key to host
+  copy: src=id_rsa.pub dest=/root/.ssh mode=0644
+  
+- name: Insert public key to authorized_keys
+  shell: cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+
+- name: Prep RPC deploy
+  command: mkdir /etc/rpc_deploy
+  
+- name: Move Ansible playbooks
+  command: cp -R /opt/ansible-lxc-rpc/etc/rpc_deploy /etc
+  
+- name: Copy RPC Ansible system variable file
+  copy: src=user_variables.yml dest=/etc/rpc_deploy mode=0644
+  
+- name: Copy RPC Ansible config file
+  copy: src=rpc_user_config.yml dest=/etc/rpc_deploy mode=0644
+  
+- name: Copy updated container_create playbook role
+  copy: src=main.yml dest=/opt/ansible-lxc-rpc/rpc_deployment/playbooks/setup/roles/container_create/tasks
+  
+- name: Copy updated Galera config file 
+  copy: src=my.cnf dest=/opt/ansible-lxc-rpc/rpc_deployment/playbooks/infrastructure/roles/galera_config/templates
