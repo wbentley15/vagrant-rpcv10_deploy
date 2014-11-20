@@ -48,3 +48,6 @@
   
 - name: Copy updated Galera config file 
   copy: src=my.cnf dest=/opt/ansible-lxc-rpc/rpc_deployment/playbooks/infrastructure/roles/galera_config/templates
+  
+- name: Copy updated group_vars config file 
+  copy: src=all.yml dest=/opt/ansible-lxc-rpc/rpc_deployment/inventory/group_vars
