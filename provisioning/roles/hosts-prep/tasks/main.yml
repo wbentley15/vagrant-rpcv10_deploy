@@ -11,7 +11,7 @@
    - fping
    
 - name: Clone RPC repository
-  command: chdir=/opt git clone -b 9.0.1 https://github.com/rcbops/ansible-lxc-rpc.git
+  command: chdir=/opt git clone -b 9.0.5 https://github.com/stackforge/os-ansible-deployment.git
 
 - name: Download pip repo
   command: chdir=/opt curl -O https://bootstrap.pypa.io/get-pip.py
@@ -20,7 +20,7 @@
   command: chdir=/opt python get-pip.py
   
 - name: Install Ansible and RPC dependencies
-  command: chdir=/opt pip install -r /opt/ansible-lxc-rpc/requirements.txt
+  command: chdir=/opt pip install -r /opt/os-ansible-deployment/requirements.txt
     
 - name: Copy private key to host
   copy: src=id_rsa dest=/root/.ssh mode=0600
@@ -35,7 +35,7 @@
   command: mkdir /etc/rpc_deploy
   
 - name: Move Ansible playbooks
-  command: cp -R /opt/ansible-lxc-rpc/etc/rpc_deploy /etc
+  command: cp -R /opt/os-ansible-deployment/etc/rpc_deploy /etc
   
 - name: Copy RPC Ansible system variable file
   copy: src=user_variables.yml dest=/etc/rpc_deploy mode=0644
@@ -44,10 +44,10 @@
   copy: src=rpc_user_config.yml dest=/etc/rpc_deploy mode=0644
   
 - name: Copy updated container_create playbook role
-  copy: src=main.yml dest=/opt/ansible-lxc-rpc/rpc_deployment/playbooks/setup/roles/container_create/tasks
+  copy: src=main.yml dest=/opt/os-ansible-deployment/rpc_deployment/playbooks/setup/roles/container_create/tasks
   
 - name: Copy updated Galera config file 
-  copy: src=my.cnf dest=/opt/ansible-lxc-rpc/rpc_deployment/playbooks/infrastructure/roles/galera_config/templates
+  copy: src=my.cnf dest=/opt/os-ansible-deployment/rpc_deployment/playbooks/infrastructure/roles/galera_config/templates
   
 - name: Copy updated group_vars config file 
-  copy: src=all.yml dest=/opt/ansible-lxc-rpc/rpc_deployment/inventory/group_vars
+  copy: src=all.yml dest=/opt/os-ansible-deployment/rpc_deployment/inventory/group_vars
