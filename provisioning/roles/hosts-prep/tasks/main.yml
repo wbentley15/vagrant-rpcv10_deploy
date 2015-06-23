@@ -11,7 +11,7 @@
    - fping
    
 - name: Clone RPC repository
-  command: chdir=/opt git clone -b 9.0.5 https://github.com/stackforge/os-ansible-deployment.git
+  command: chdir=/opt git clone -b 10.1.1 https://github.com/stackforge/os-ansible-deployment.git
 
 - name: Download pip repo
   command: chdir=/opt curl -O https://bootstrap.pypa.io/get-pip.py
