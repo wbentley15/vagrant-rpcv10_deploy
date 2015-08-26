@@ -9,6 +9,7 @@ cat << EOF >> /etc/hosts
 172.29.236.7 deploy1
 172.29.236.2 021579-infra01
 172.29.236.5 021579-logging01
+172.29.236.6 021579-storage01
 172.29.236.10 021579-compute001
 EOF
 SCRIPT
